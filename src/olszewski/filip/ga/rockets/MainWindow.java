@@ -17,12 +17,13 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		createController();
 		configureWindow();
 		createComponents();
-		start();
 	}
 
 	public void start() {
 		setVisible(true);
-
+		Vector2d panelSize = new Vector2d((float) rocketsPanel.getSize().getWidth(),
+				(float) rocketsPanel.getSize().getHeight());
+		controller.startSimulation(panelSize, 300, 200, 0.02);
 	}
 
 	private void createController() {
@@ -55,12 +56,19 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	}
 
 	@Override
-	public void newRocketData(RocketData data) {
+	public void newRocketData(GenerationData data) {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				rocketsPanel.setRocketData(data);
+//				rocketsPanel.setRocketData(data);
+				System.out.println("Racket 10, cycle " + data.lifecycle + ", generation " + data.generation);
+				System.out.println("Position: " + data.rockets.get(10).getPosition().toString());
+				System.out.println("Velocity: " + data.rockets.get(10).getVelocity().toString());
+				System.out.println("Acceleration: " + data.rockets.get(10).getAcceleration().toString());
+				System.out.println("Reached target: " + data.rockets.get(10).targetReached());
+				System.out.println("Crushed: " + data.rockets.get(10).crushed());
+				System.out.println();
 			}
 		});
 	}

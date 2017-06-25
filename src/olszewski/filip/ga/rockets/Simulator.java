@@ -25,7 +25,8 @@ public class Simulator {
 	 * 
 	 */
 	private void calculateTarget() {
-		target = new Vector2d(panelSize.getX() / 2, panelSize.getX() - 30);
+		target = new Vector2d(panelSize.getX() / 2, panelSize.getY() - 30);
+		System.out.println(target);
 	}
 
 	public void setListener(SimulatorListener listener) {
@@ -34,12 +35,27 @@ public class Simulator {
 
 	public void start() {
 		Population population = new Population(target, panelSize, populationSize, lifespan, mutationRate);
+		while (true) {
 
+			population.setCycle(0);
+			for (int i = 1; i <= lifespan; i++) {
+				notifyListener(population.getGenerationData());
+				population.updatePositions(i);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			notifyListener(population.getGenerationData());
+			population.createNewGeneration();
+		}
 
 
 	}
 
-	private void notifyListener(RocketData data) {
+	private void notifyListener(GenerationData data) {
 		if (listener != null) {
 			listener.newRocketData(data);
 		}

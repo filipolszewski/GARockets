@@ -12,9 +12,11 @@ public class Population {
 	private double mutationRate;
 	private Vector2d target;
 	private Vector2d panelSize;
+	private Integer cycle;
 
 	private Integer generation;
 	private List<Rocket> population = new ArrayList<>();
+
 
 	public Population(Vector2d target, Vector2d panelSize, Integer size, Integer lifespan, double mutationRate) {
 		this.target = target;
@@ -22,7 +24,7 @@ public class Population {
 		this.size = size;
 		this.lifespan = lifespan;
 		this.mutationRate = mutationRate;
-		generation = 0;
+		generation = 1;
 		createRandomPopulation(size);
 	}
 
@@ -38,8 +40,9 @@ public class Population {
 	 * 
 	 */
 	public void updatePositions(Integer cycle) {
+		this.cycle = cycle;
 		for (int i = 0; i < size; i++) {
-			population.get(i).update(cycle, target);
+			population.get(i).update(cycle - 1, target);
 		}
 	}
 
@@ -114,6 +117,14 @@ public class Population {
 
 	public Integer getGeneration() {
 		return generation;
+	}
+
+	public GenerationData getGenerationData() {
+		return new GenerationData(population, generation, cycle, size, mutationRate);
+	}
+
+	public void setCycle(int i) {
+		this.cycle = i;
 	}
 
 }

@@ -14,7 +14,7 @@ public class RocketPanel extends JPanel {
 	private int xSize;
 	private int ySize;
 	private Vector2d target;
-	private RocketData rocketData;
+	private GenerationData rocketData;
 
 	public RocketPanel(Vector2d target) {
 		this.target = target;
@@ -49,7 +49,7 @@ public class RocketPanel extends JPanel {
 
 	}
 
-	public void setRocketData(RocketData data) {
+	public void setRocketData(GenerationData data) {
 		// TODO Auto-generated method stub
 
 	}

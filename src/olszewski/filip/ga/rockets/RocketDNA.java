@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class RocketDNA {
 
-	private static final Integer geneLimit = 3;
+	private static final Integer geneLimit = 2;
 	private Integer size;
 	private List<Vector2d> genes = new ArrayList<>();
 
@@ -24,6 +24,10 @@ public class RocketDNA {
 
 	public Vector2d getGeneAt(Integer i) {
 		return genes.get(i);
+	}
+
+	public Vector2d setGene(Integer pos, Vector2d gene) {
+		return genes.set(pos, gene);
 	}
 
 	

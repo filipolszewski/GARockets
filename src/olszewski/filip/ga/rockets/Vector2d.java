@@ -13,7 +13,6 @@ public class Vector2d {
 
 	private float x;
 	private float y;
-	private float limit = Integer.MAX_VALUE;
 	private float limitX = Integer.MAX_VALUE;
 	private float limitY = Integer.MAX_VALUE;
 	
@@ -29,33 +28,30 @@ public class Vector2d {
 
 	public static Vector2d createRandom(int boundX, int boundY) {
 		Random r = new Random();
-		return new Vector2d(r.nextInt(boundX), r.nextInt(boundY));
+		return new Vector2d(r.nextFloat() * boundX, r.nextFloat() * boundY).mul(2)
+				.substract(new Vector2d(boundX, boundY));
 	}
 
-	public void add(Vector2d v2) {
+	public Vector2d add(Vector2d v2) {
 		float newX = this.x + v2.getX();
 		float newY = this.y + v2.getY();
 		setX(newX);
 		setY(newY);
+		return this;
 	}
 
-	public void substract(Vector2d v2) {
+	public Vector2d substract(Vector2d v2) {
 		float newX = this.x - v2.getX();
 		float newY = this.y - v2.getY();
 		setX(newX);
 		setY(newY);
-
+		return this;
 	}
 
-	public void mul(float mul) {
+	public Vector2d mul(float mul) {
 		setX(this.x * mul);
 		setY(this.y * mul);
-	}
-
-	public void setLimit(float limit) {
-		this.limit = limit;
-		setX(this.x);
-		setY(this.y);
+		return this;
 	}
 
 	public float getX() {
@@ -89,7 +85,12 @@ public class Vector2d {
 
 	public void setLimitForY(float lim) {
 		this.limitY = lim;
-		setX(this.x);
+		setY(this.y);
+	}
+
+	@Override
+	public String toString() {
+		return x + " " + y;
 	}
 
 }

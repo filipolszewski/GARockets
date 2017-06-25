@@ -1,5 +1,7 @@
 package olszewski.filip.ga.rockets;
 
+import java.util.Random;
+
 public class Rocket {
 
 	private Vector2d position;
@@ -8,13 +10,14 @@ public class Rocket {
 	private Integer lifespan;
 	private RocketDNA dna;
 	private Integer fitness;
-	private Vector2d worldSize;
 	private Vector2d panelSize;
-	private boolean crushed;
-	private boolean reachedTarget;
+	private boolean crushed = false;
+	private boolean reachedTarget = false;
+
+	private static final float MAX_VELOCITY = 25;
 
 	public Rocket(Integer lifespan, Vector2d panelSize) {
-		this.position = new Vector2d(0, 0);
+		this.position = new Vector2d(panelSize.getX() / 2, 10);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
 		this.lifespan = lifespan;
@@ -22,6 +25,8 @@ public class Rocket {
 		this.panelSize = panelSize;
 		position.setLimitForX(panelSize.getX());
 		position.setLimitForY(panelSize.getY());
+		velocity.setLimitForX(MAX_VELOCITY);
+		velocity.setLimitForY(MAX_VELOCITY);
 	}
 
 	public void applyForce(Vector2d force) {
@@ -38,8 +43,8 @@ public class Rocket {
 		velocity.add(acceleration);
 		applyForce(dna.getGeneAt(cycle));
 		
-		if ((position.getX() <= 0 && position.getX() >= panelSize.getX())
-				&& (position.getY() <= 0 && position.getY() >= panelSize.getY())) {
+		if ((position.getX() < 0 || position.getX() >= panelSize.getX())
+				|| (position.getY() < 0 || position.getY() >= panelSize.getY())) {
 			this.crushed = true;
 		}
 
@@ -50,8 +55,8 @@ public class Rocket {
 
 	public void calculateFitness(Vector2d targetPosition) {
 		fitness = 0;
-		fitness += (int) (Math.pow((targetPosition.getX() - this.position.getX()), 2));
-		fitness += (int) (Math.pow((targetPosition.getY() - this.position.getY()), 2));
+		fitness += (int) (Math.pow(600 - (targetPosition.getX() - this.position.getX()), 2));
+		fitness += (int) (Math.pow(600 - (targetPosition.getY() - this.position.getY()), 2));
 		if (crushed) {
 			fitness /= 4;
 		}
@@ -61,8 +66,20 @@ public class Rocket {
 	}
 
 	public Rocket crossoverWith(Rocket parentB) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer dnaSize = lifespan;
+		Rocket child = new Rocket(dnaSize, panelSize);
+		RocketDNA newDNA = new RocketDNA(dnaSize);
+		Random r = new Random();
+		Integer distributionPoint = r.nextInt(dnaSize);
+
+		for (int i = 0; i < distributionPoint; i++) {
+			newDNA.setGene(i, dna.getGeneAt(i));
+		}
+		for (int i = distributionPoint; i < dnaSize; i++) {
+			newDNA.setGene(i, parentB.dna.getGeneAt(i));
+		}
+		child.setDna(newDNA);
+		return child;
 	}
 
 	public void mutate() {
@@ -117,5 +134,12 @@ public class Rocket {
 		this.fitness = fitness;
 	}
 
+	public boolean targetReached() {
+		return reachedTarget;
+	}
+
+	public boolean crushed() {
+		return crushed;
+	}
 
 }
