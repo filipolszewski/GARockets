@@ -84,7 +84,6 @@ public class Population {
 				return rocket;
 			}
 		}
-		System.out.println("Error - No rocket picked! - implementation error..");
 		return null;
 	}
 
@@ -120,7 +119,17 @@ public class Population {
 	}
 
 	public GenerationData getGenerationData() {
-		return new GenerationData(population, generation, cycle, size, mutationRate);
+		return new GenerationData(population, generation, cycle, size, mutationRate, calculatesuccessCount());
+	}
+
+	private Integer calculatesuccessCount() {
+		Integer count = 0;
+		for (int i = 0; i < size; i++) {
+			if (getPopulation().get(i).targetReached()) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	public void setCycle(int i) {

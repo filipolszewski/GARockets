@@ -26,10 +26,10 @@ public class Vector2d {
 		this.y = y;
 	}
 
-	public static Vector2d createRandom(int boundX, int boundY) {
+	public static Vector2d createRandom(float genelimitX, float genelimitY) {
 		Random r = new Random();
-		return new Vector2d(r.nextFloat() * boundX, r.nextFloat() * boundY).mul(2)
-				.substract(new Vector2d(boundX, boundY));
+		return new Vector2d(r.nextFloat() * genelimitX, r.nextFloat() * genelimitY).mul(2)
+				.substract(new Vector2d(genelimitX, genelimitY));
 	}
 
 	public Vector2d add(Vector2d v2) {

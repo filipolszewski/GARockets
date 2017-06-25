@@ -41,12 +41,12 @@ public class Simulator {
 			for (int i = 1; i <= lifespan; i++) {
 				notifyListener(population.getGenerationData());
 				population.updatePositions(i);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			}
+			try {
+				Thread.sleep(4000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			notifyListener(population.getGenerationData());
 			population.createNewGeneration();

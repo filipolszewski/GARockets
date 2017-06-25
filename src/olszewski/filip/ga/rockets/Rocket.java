@@ -17,7 +17,7 @@ public class Rocket {
 	private static final float MAX_VELOCITY = 25;
 
 	public Rocket(Integer lifespan, Vector2d panelSize) {
-		this.position = new Vector2d(panelSize.getX() / 2, 10);
+		this.position = new Vector2d(panelSize.getX() / 2, 3);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
 		this.lifespan = lifespan;
@@ -55,13 +55,13 @@ public class Rocket {
 
 	public void calculateFitness(Vector2d targetPosition) {
 		fitness = 0;
-		fitness += (int) (Math.pow(600 - (targetPosition.getX() - this.position.getX()), 2));
-		fitness += (int) (Math.pow(600 - (targetPosition.getY() - this.position.getY()), 2));
+		fitness += (int) (Math.pow(300 - (targetPosition.getX() - this.position.getX()), 2));
+		fitness += (int) (Math.pow(550 - (targetPosition.getY() - this.position.getY()), 2));
 		if (crushed) {
-			fitness /= 4;
+			fitness /= 10;
 		}
 		if (reachedTarget) {
-			fitness *= 5;
+			fitness *= 10;
 		}
 	}
 
