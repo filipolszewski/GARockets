@@ -22,5 +22,9 @@ public class RocketDNA {
 		genes.set(r.nextInt(size), Vector2d.createRandom(geneLimit, geneLimit));
 	}
 
+	public Vector2d getGeneAt(Integer i) {
+		return genes.get(i);
+	}
+
 	
 }

@@ -21,7 +21,7 @@ public class RocketsMain {
 
 			@Override
 			public void run() {
-				RocketsWindow mainWindow = new RocketsWindow();
+				RocketWindow mainWindow = new RocketWindow();
 				mainWindow.start();
 			}
 		});

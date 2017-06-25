@@ -11,12 +11,14 @@ public class RocketPopulation {
 	private Integer lifespan;
 	private double mutationRate;
 	private Vector2d target;
+	private Vector2d panelSize;
 
 	private Integer generation;
 	private List<Rocket> population = new ArrayList<>();
 
-	public RocketPopulation(Vector2d target, Integer size, Integer lifespan, double mutationRate) {
+	public RocketPopulation(Vector2d target, Vector2d panelSize, Integer size, Integer lifespan, double mutationRate) {
 		this.target = target;
+		this.panelSize = panelSize;
 		this.size = size;
 		this.lifespan = lifespan;
 		this.mutationRate = mutationRate;
@@ -26,7 +28,18 @@ public class RocketPopulation {
 
 	private void createRandomPopulation(Integer size) {
 		for (int i = 0; i < size; i++) {
-			getPopulation().add(new Rocket(lifespan));
+			getPopulation().add(new Rocket(lifespan, panelSize));
+		}
+	}
+
+	/**
+	 * Calculates new positions and new speeds of rockets, then applies new
+	 * forces - updates the state of objects after one cycle.
+	 * 
+	 */
+	public void updatePositions(Integer cycle) {
+		for (int i = 0; i < size; i++) {
+			population.get(i).update(cycle, target);
 		}
 	}
 
