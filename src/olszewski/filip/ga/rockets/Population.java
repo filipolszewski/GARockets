@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class RocketPopulation {
+public class Population {
 
 	// These are the parameters to play with.
 	private Integer size;
@@ -16,7 +16,7 @@ public class RocketPopulation {
 	private Integer generation;
 	private List<Rocket> population = new ArrayList<>();
 
-	public RocketPopulation(Vector2d target, Vector2d panelSize, Integer size, Integer lifespan, double mutationRate) {
+	public Population(Vector2d target, Vector2d panelSize, Integer size, Integer lifespan, double mutationRate) {
 		this.target = target;
 		this.panelSize = panelSize;
 		this.size = size;

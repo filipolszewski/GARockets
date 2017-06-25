@@ -1,8 +1,8 @@
 package olszewski.filip.ga.rockets;
 
-public class RocketWindowController {
+public class MainWindowController {
 
-	private RocketListener listener;
+	private SimulatorListener listener;
 
 	public void startSimulation(Vector2d panelSize, Integer populationSize, Integer lifespan,
 			double mutationRate) {
@@ -11,7 +11,7 @@ public class RocketWindowController {
 
 			@Override
 			public void run() {
-				RocketSimulator simulator = new RocketSimulator(panelSize, populationSize, lifespan, mutationRate);
+				Simulator simulator = new Simulator(panelSize, populationSize, lifespan, mutationRate);
 				simulator.setListener(listener);
 				simulator.start();
 			}
@@ -19,7 +19,7 @@ public class RocketWindowController {
 		simThread.start();
 	}
 
-	public RocketWindowController(RocketListener listener) {
+	public MainWindowController(SimulatorListener listener) {
 		this.listener = listener;
 	}
 

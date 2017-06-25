@@ -1,6 +1,6 @@
 package olszewski.filip.ga.rockets;
 
-public class RocketSimulator {
+public class Simulator {
 
 	private Integer populationSize;
 	private Integer lifespan;
@@ -8,9 +8,9 @@ public class RocketSimulator {
 	private Vector2d panelSize;
 	private Vector2d target;
 
-	private RocketListener listener;
+	private SimulatorListener listener;
 
-	public RocketSimulator(Vector2d panelSize, Integer populationSize, Integer lifespan, double mutationRate) {
+	public Simulator(Vector2d panelSize, Integer populationSize, Integer lifespan, double mutationRate) {
 		this.populationSize = populationSize;
 		this.lifespan = lifespan;
 		this.mutationRate = mutationRate;
@@ -28,12 +28,12 @@ public class RocketSimulator {
 		target = new Vector2d(panelSize.getX() / 2, panelSize.getX() - 30);
 	}
 
-	public void setListener(RocketListener listener) {
+	public void setListener(SimulatorListener listener) {
 		this.listener = listener;
 	}
 
 	public void start() {
-		RocketPopulation population = new RocketPopulation(target, panelSize, populationSize, lifespan, mutationRate);
+		Population population = new Population(target, panelSize, populationSize, lifespan, mutationRate);
 
 
 

@@ -7,13 +7,13 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
-public class RocketWindow extends JFrame implements RocketListener {
+public class MainWindow extends JFrame implements SimulatorListener {
 
 	private JPanel mainPanel;
 	private RocketPanel rocketsPanel;
-	private RocketWindowController controller;
+	private MainWindowController controller;
 
-	public RocketWindow() {
+	public MainWindow() {
 		createController();
 		configureWindow();
 		createComponents();
@@ -26,7 +26,7 @@ public class RocketWindow extends JFrame implements RocketListener {
 	}
 
 	private void createController() {
-		controller = new RocketWindowController(this);
+		controller = new MainWindowController(this);
 	}
 
 	private void configureWindow() {
