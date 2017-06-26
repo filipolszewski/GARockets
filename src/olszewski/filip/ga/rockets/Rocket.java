@@ -7,6 +7,7 @@ public class Rocket {
 	private Vector2d position;
 	private Vector2d velocity;
 	private Vector2d acceleration;
+
 	private Integer lifespan;
 	private RocketDNA dna;
 	private long fitness;
@@ -28,8 +29,6 @@ public class Rocket {
 		this.lifespan = lifespan;
 		this.panelSize = panelSize;
 		this.maxVelocity = maxVelocity;
-		// TODO - get rid of panelSize infrmation from this object - it
-		// shouldn't really 'know' about it
 		initRocket();
 	}
 
@@ -55,6 +54,16 @@ public class Rocket {
 		this.acceleration.add(force);
 	}
 
+	/**
+	 * Updates the physical state in next cycle and checks if it crushed or
+	 * reached the target
+	 * 
+	 * @param cycle
+	 *            cycle indicator used to determine which gene of DNA should be
+	 *            used on this update
+	 * @param target
+	 *            target coordinates to check if rocket reached it
+	 */
 	public void update(Integer cycle, Vector2d target) {
 		
 		if (reachedTarget || crushed) {
@@ -77,6 +86,14 @@ public class Rocket {
 		}
 	}
 
+	/**
+	 * 
+	 * Calculates the fitness function for the element. Returned value depends
+	 * on the distance to target, the crushed and reachedTarget flags. The
+	 * shorter time in which rocket reached the target, the more fitness.
+	 * 
+	 * @param target
+	 */
 	public void calculateFitness(Vector2d target) {
 		fitness = 0;
 		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - position.distance(target)), 1.2);
@@ -92,6 +109,12 @@ public class Rocket {
 		}
 	}
 
+	/**
+	 * Performs crossover with another instance, randomly sharing its DNA.
+	 * 
+	 * @param parentB
+	 * @return
+	 */
 	public Rocket crossoverWith(Rocket parentB) {
 		Integer dnaSize = lifespan;
 		Rocket child = new Rocket(dnaSize, panelSize, maxVelocity);

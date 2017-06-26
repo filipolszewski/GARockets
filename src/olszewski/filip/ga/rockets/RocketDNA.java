@@ -11,6 +11,11 @@ public class RocketDNA {
 	private Integer size;
 	private List<Vector2d> genes = new ArrayList<>();
 
+	/**
+	 * Constructor which initialize the genes with random vectors.
+	 * 
+	 * @param size
+	 */
 	public RocketDNA(Integer size) {
 		this.size = size;
 		for (int i = 0; i < size; i++) {
@@ -18,6 +23,9 @@ public class RocketDNA {
 		}
 	}
 
+	/**
+	 * Changes genes to new, random ones.
+	 */
 	public void mutate() {
 		Random r = new Random();
 		for (int i = 0; i < mutatedGenesNumber; i++) {
