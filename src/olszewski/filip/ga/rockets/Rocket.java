@@ -17,6 +17,7 @@ public class Rocket {
 	private boolean reachedTarget = false;
 
 	private float maxVelocity;
+	private float minDistanceToTarget;
 
 	/**
 	 * 
@@ -42,6 +43,8 @@ public class Rocket {
 		this.position = new Vector2d(panelSize.getX() / 2, 30);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
+
+		this.minDistanceToTarget = panelSize.distance(new Vector2d());
 
 		velocity.setLimitForX(maxVelocity);
 		velocity.setLimitForY(maxVelocity);
@@ -74,34 +77,41 @@ public class Rocket {
 		velocity.add(acceleration);
 		applyForce(dna.getGeneAt(cycle));
 		
+		float currentDistanceToTarget = position.distance(target);
+
+		if (currentDistanceToTarget < minDistanceToTarget) {
+			minDistanceToTarget = currentDistanceToTarget;
+		}
+
+		if (currentDistanceToTarget < 5) {
+			this.reachedTarget = true;
+			minDistanceToTarget = 0;
+			timeToReach = cycle;
+		}
+
 		if ((position.getX() < 2 || position.getX() >= panelSize.getX() - 2)
 				|| (position.getY() < 2 || position.getY() >= panelSize.getY() - 2)) {
 
 			this.crushed = true;
-		}
-
-		if (position.distance(target) < 5) {
-			this.reachedTarget = true;
-			timeToReach = cycle;
 		}
 	}
 
 	/**
 	 * 
 	 * Calculates the fitness function for the element. Returned value depends
-	 * on the distance to target, the crushed and reachedTarget flags. The
-	 * shorter time in which rocket reached the target, the more fitness.
+	 * on the closest distance to target achieved during flight, the crushed and
+	 * reachedTarget flags. The shorter time in which rocket reached the target,
+	 * the more fitness.
 	 * 
 	 * @param target
 	 */
 	public void calculateFitness(Vector2d target) {
 		fitness = 0;
-		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - position.distance(target)), 1.2);
+		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - minDistanceToTarget), 1.2);
 		if (crushed) {
 			fitness /= 3;
 		}
 		if (reachedTarget) {
-			fitness *= 3;
 			fitness += (int) Math.pow(lifespan - timeToReach, 2);
 		}
 		if (fitness <= 0) {

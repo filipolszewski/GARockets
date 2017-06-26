@@ -110,7 +110,6 @@ public class Population {
 	 */
 	private Rocket pickRocket(long fitnessSum) {
 		long point = ThreadLocalRandom.current().nextLong(fitnessSum);
-		System.out.println(point);
 		for (int i = 0; i < size; i++) {
 			Rocket rocket = getPopulation().get(i);
 			point += rocket.getFitness();
