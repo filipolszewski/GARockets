@@ -6,6 +6,7 @@ import java.util.Random;
 
 public class RocketDNA {
 
+	private static final int mutatedGenesNumber = 5;
 	private static final float geneLimit = (float) 0.4;
 	private Integer size;
 	private List<Vector2d> genes = new ArrayList<>();
@@ -19,7 +20,9 @@ public class RocketDNA {
 
 	public void mutate() {
 		Random r = new Random();
-		genes.set(r.nextInt(size), Vector2d.createRandom(geneLimit, geneLimit));
+		for (int i = 0; i < mutatedGenesNumber; i++) {
+			genes.set(r.nextInt(size), Vector2d.createRandom(geneLimit, geneLimit));
+		}
 	}
 
 	public Vector2d getGeneAt(Integer i) {

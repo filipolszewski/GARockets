@@ -108,7 +108,6 @@ public class Population {
 		for (int i = 0; i < size; i++) {
 			fitnessSum += getPopulation().get(i).getFitness();
 		}
-		System.out.println(fitnessSum);
 		return fitnessSum;
 	}
 

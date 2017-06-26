@@ -24,7 +24,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		setVisible(true);
 		Vector2d panelSize = new Vector2d((float) rocketsPanel.getSize().getWidth(),
 				(float) rocketsPanel.getSize().getHeight());
-		controller.startSimulation(panelSize, 300, 200, 0.02);
+		controller.startSimulation(panelSize, 300, 200, 0.03);
 	}
 
 	private void createController() {

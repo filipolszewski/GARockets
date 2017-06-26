@@ -33,39 +33,40 @@ public class Simulator {
 		this.listener = listener;
 	}
 
+	/**
+	 * The most important method performing the whole simulation - the main loop
+	 * iterating with next generations, and inside loop iterating over next
+	 * cycles of rocket's flights.
+	 */
 	public void start() {
 		Population population = new Population(target, panelSize, populationSize, lifespan, mutationRate);
 		while (true) {
 
 			population.setCycle(0);
 			for (int i = 1; i <= lifespan; i++) {
-
 				GenerationData data = population.getGenerationData();
 
 				if (data.allFinished) {
 					break;
 				}
-
 				notifyListener(data);
 				population.updatePositions(i);
-
-				try {
-					Thread.sleep(50);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
+				delaySimulation(50);
 			}
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			delaySimulation(1000);
 			notifyListener(population.getGenerationData());
 			population.createNewGeneration();
 		}
 
 
+	}
+
+	private void delaySimulation(int delay) {
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void notifyListener(GenerationData data) {

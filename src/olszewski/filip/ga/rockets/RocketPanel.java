@@ -33,9 +33,10 @@ public class RocketPanel extends JPanel {
 	}
 
 	private void drawInfo() {
-		g2.drawString("Generation: " + rocketData.generation, 2, 40);
-		g2.drawString("Cycle: " + rocketData.lifecycle, 2, 55);
-		g2.drawString("Successes: " + rocketData.successCount, 2, 70);
+		g2.drawString("Generation: " + rocketData.generation, 5, 40);
+		g2.drawString("Cycle: " + rocketData.lifecycle, 5, 55);
+		g2.drawString("Population size: " + rocketData.populationSize, 5, 70);
+		g2.drawString("Successes: " + rocketData.successCount, 5, 85);
 	}
 
 	private void drawTarget() {
@@ -53,7 +54,10 @@ public class RocketPanel extends JPanel {
 
 	private void drawRocket(Rocket rocket) {
 		Vector2d pos = rocket.getPosition();
-		g2.fillRect((int) pos.getX() - 2, (int) pos.getY() - 2, 4, 4);
+		if (!rocket.crushed()) {
+			g2.fillRect((int) pos.getX() - 2, (int) pos.getY() - 2, 4, 4);
+		}
+
 	}
 
 	public void setRocketData(GenerationData data) {

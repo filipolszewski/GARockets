@@ -54,6 +54,10 @@ public class Vector2d {
 		return this;
 	}
 
+	public float distance(Vector2d v2) {
+		return (float) Math.pow(Math.pow(this.x - v2.x, 2) + Math.pow(this.y - v2.y, 2), 1.0 / 2.0);
+	}
+
 	public float getX() {
 		return x;
 	}
