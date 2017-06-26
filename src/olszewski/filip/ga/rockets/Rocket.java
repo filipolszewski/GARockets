@@ -9,22 +9,23 @@ public class Rocket {
 	private Vector2d acceleration;
 	private Integer lifespan;
 	private RocketDNA dna;
-	private Integer fitness;
+	private long fitness;
 	private Vector2d panelSize;
 	private boolean crushed = false;
+	private Integer timeToReach;
 	private boolean reachedTarget = false;
 
-	private static final float MAX_VELOCITY = 25;
+	private static final float MAX_VELOCITY = 10;
 
 	public Rocket(Integer lifespan, Vector2d panelSize) {
-		this.position = new Vector2d(panelSize.getX() / 2, 3);
+		this.position = new Vector2d(panelSize.getX() / 2, 30);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
 		this.lifespan = lifespan;
 		this.dna = new RocketDNA(lifespan);
 		this.panelSize = panelSize;
-		position.setLimitForX(panelSize.getX());
-		position.setLimitForY(panelSize.getY());
+		position.setLimitForX(panelSize.getX() - 2);
+		position.setLimitForY(panelSize.getY() - 2);
 		velocity.setLimitForX(MAX_VELOCITY);
 		velocity.setLimitForY(MAX_VELOCITY);
 	}
@@ -43,25 +44,31 @@ public class Rocket {
 		velocity.add(acceleration);
 		applyForce(dna.getGeneAt(cycle));
 		
-		if ((position.getX() < 0 || position.getX() >= panelSize.getX())
-				|| (position.getY() < 0 || position.getY() >= panelSize.getY())) {
+		if ((position.getX() < 2 || position.getX() >= panelSize.getX() - 2)
+				|| (position.getY() < 2 || position.getY() >= panelSize.getY() - 2)) {
+
 			this.crushed = true;
 		}
 
-		if ((Math.abs(position.getX() - target.getX()) < 2) && (Math.abs(position.getY() - target.getY()) < 2)) {
+		if ((Math.abs(position.getX() - target.getX()) < 3) && (Math.abs(position.getY() - target.getY()) < 3)) {
 			this.reachedTarget = true;
+			timeToReach = cycle;
 		}
 	}
 
-	public void calculateFitness(Vector2d targetPosition) {
+	public void calculateFitness(Vector2d target) {
 		fitness = 0;
-		fitness += (int) (Math.pow(300 - (targetPosition.getX() - this.position.getX()), 2));
-		fitness += (int) (Math.pow(550 - (targetPosition.getY() - this.position.getY()), 2));
+		fitness += (int) (Math.pow(300 - (Math.abs(target.getX() - this.position.getX())), 2));
+		fitness += (int) (Math.pow(542 - (Math.abs(target.getY() - this.position.getY())), 2));
 		if (crushed) {
 			fitness /= 10;
 		}
 		if (reachedTarget) {
-			fitness *= 10;
+			fitness *= 5;
+			fitness += (int) Math.pow(lifespan - timeToReach, 2);
+		}
+		if (fitness <= 0) {
+			fitness = 1;
 		}
 	}
 
@@ -126,11 +133,11 @@ public class Rocket {
 		this.dna = dna;
 	}
 
-	public Integer getFitness() {
+	public long getFitness() {
 		return fitness;
 	}
 
-	public void setFitness(Integer fitness) {
+	public void setFitness(long fitness) {
 		this.fitness = fitness;
 	}
 

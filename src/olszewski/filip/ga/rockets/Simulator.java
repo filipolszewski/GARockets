@@ -39,13 +39,26 @@ public class Simulator {
 
 			population.setCycle(0);
 			for (int i = 1; i <= lifespan; i++) {
-				notifyListener(population.getGenerationData());
+
+				GenerationData data = population.getGenerationData();
+
+				if (data.allFinished) {
+					break;
+				}
+
+				notifyListener(data);
 				population.updatePositions(i);
+
+				try {
+					Thread.sleep(50);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
 			}
 			try {
-				Thread.sleep(4000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			notifyListener(population.getGenerationData());

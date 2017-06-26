@@ -3,10 +3,10 @@ package olszewski.filip.ga.rockets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Population {
 
-	// These are the parameters to play with.
 	private Integer size;
 	private Integer lifespan;
 	private double mutationRate;
@@ -67,20 +67,21 @@ public class Population {
 
 	private List<Rocket> generateMatingPool() {
 		List<Rocket> matingPool = new ArrayList<>();
+		long fitnessSum = calculateFitnessSum();
+		Random r = new Random();
 		for (int i = 0; i < size; i++) {
-			matingPool.add(pickRocket());
+			matingPool.add(pickRocket(fitnessSum, r));
 		}
 		return matingPool;
 	}
 
-	private Rocket pickRocket() {
-		Integer maxFitness = calculateFitnessSum();
-		Random r = new Random();
-		Integer point = r.nextInt(maxFitness);
+	private Rocket pickRocket(long fitnessSum, Random r) {
+		long point = ThreadLocalRandom.current().nextLong(fitnessSum);
+		System.out.println(point);
 		for (int i = 0; i < size; i++) {
 			Rocket rocket = getPopulation().get(i);
 			point += rocket.getFitness();
-			if (point >= maxFitness) {
+			if (point >= fitnessSum) {
 				return rocket;
 			}
 		}
@@ -102,11 +103,12 @@ public class Population {
 		return newPopulation;
 	}
 
-	private Integer calculateFitnessSum() {
-		Integer fitnessSum = 0;
+	private long calculateFitnessSum() {
+		long fitnessSum = 0;
 		for (int i = 0; i < size; i++) {
 			fitnessSum += getPopulation().get(i).getFitness();
 		}
+		System.out.println(fitnessSum);
 		return fitnessSum;
 	}
 
@@ -119,7 +121,19 @@ public class Population {
 	}
 
 	public GenerationData getGenerationData() {
-		return new GenerationData(population, generation, cycle, size, mutationRate, calculatesuccessCount());
+		return new GenerationData(population, generation, cycle, size, mutationRate, calculatesuccessCount(), target,
+				allFinished());
+	}
+
+	private boolean allFinished() {
+		for (int i = 0; i < size; i++) {
+			Rocket rocket = getPopulation().get(i);
+			boolean finished = rocket.crushed() || rocket.targetReached();
+			if (!finished) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private Integer calculatesuccessCount() {

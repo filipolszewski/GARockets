@@ -2,6 +2,7 @@ package olszewski.filip.ga.rockets;
 
 import java.awt.BorderLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -48,10 +49,13 @@ public class MainWindow extends JFrame implements SimulatorListener {
 	private void createOptionsPanel() {
 		JPanel optionsPanel = new JPanel();
 		mainPanel.add(optionsPanel, BorderLayout.LINE_START);
+
+		JButton startButton = new JButton("Start");
+
 	}
 
 	private void createRocketsPanel() {
-		rocketsPanel = new RocketPanel(null);
+		rocketsPanel = new RocketPanel();
 		mainPanel.add(rocketsPanel, BorderLayout.CENTER);
 	}
 
@@ -61,17 +65,8 @@ public class MainWindow extends JFrame implements SimulatorListener {
 
 			@Override
 			public void run() {
-//				rocketsPanel.setRocketData(data);
-				System.out.println("Racket 10, cycle " + data.lifecycle + ", generation " + data.generation);
-				System.out.println("Position: " + data.rockets.get(10).getPosition().toString());
-				// System.out.println("Velocity: " +
-				// data.rockets.get(10).getVelocity().toString());
-				// System.out.println("Acceleration: " +
-				// data.rockets.get(10).getAcceleration().toString());
-				System.out.println("Reached target: " + data.rockets.get(10).targetReached());
-				System.out.println("Crushed: " + data.rockets.get(10).crushed());
-				System.out.println("Success Count: " + data.successCount);
-				System.out.println();
+				rocketsPanel.setRocketData(data);
+				rocketsPanel.paintComponent(getGraphics());
 			}
 		});
 	}
