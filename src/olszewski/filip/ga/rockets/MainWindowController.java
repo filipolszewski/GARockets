@@ -3,20 +3,32 @@ package olszewski.filip.ga.rockets;
 public class MainWindowController {
 
 	private SimulatorListener listener;
+	private boolean simulationRunning = false;
+	private Thread simThread;
 
-	public void startSimulation(Vector2d panelSize, Integer populationSize, Integer lifespan,
-			double mutationRate) {
+	/**
+	 * Makes new thread, which starts the Simulator object.
+	 * 
+	 */
+	public void onStartSimulation(SimulationConfiguration config) {
 
-		Thread simThread = new Thread(new Runnable() {
+		if (!simulationRunning) {
+			simThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				Simulator simulator = new Simulator(panelSize, populationSize, lifespan, mutationRate);
-				simulator.setListener(listener);
-				simulator.start();
-			}
-		});
-		simThread.start();
+				@Override
+				public void run() {
+					Simulator simulator = new Simulator(config);
+					simulator.setListener(listener);
+					simulator.start();
+				}
+			});
+			simThread.start();
+			simulationRunning = true;
+		}
+	}
+
+	public void stopSimulation() {
+		// TODO - stopping the simulation (some synchronized work to do here)
 	}
 
 	public MainWindowController(SimulatorListener listener) {

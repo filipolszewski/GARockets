@@ -2,20 +2,13 @@ package olszewski.filip.ga.rockets;
 
 public class Simulator {
 
-	private Integer populationSize;
-	private Integer lifespan;
-	private double mutationRate;
-	private Vector2d panelSize;
-	private Vector2d target;
+	private SimulationConfiguration config;
 
 	private SimulatorListener listener;
 
-	public Simulator(Vector2d panelSize, Integer populationSize, Integer lifespan, double mutationRate) {
-		this.populationSize = populationSize;
-		this.lifespan = lifespan;
-		this.mutationRate = mutationRate;
-		this.panelSize = panelSize;
-		calculateTarget();
+	public Simulator(SimulationConfiguration config) {
+		config.target = calculateTarget(config.panelSize);
+		this.config = config;
 	}
 
 	/**
@@ -24,14 +17,10 @@ public class Simulator {
 	 * Editable!
 	 * 
 	 */
-	private void calculateTarget() {
-		target = new Vector2d(panelSize.getX() / 2, panelSize.getY() - 30);
-		System.out.println(target);
+	private Vector2d calculateTarget(Vector2d panelSize) {
+		return new Vector2d(panelSize.getX() / 2, panelSize.getY() - 30);
 	}
 
-	public void setListener(SimulatorListener listener) {
-		this.listener = listener;
-	}
 
 	/**
 	 * The most important method performing the whole simulation - the main loop
@@ -39,13 +28,13 @@ public class Simulator {
 	 * cycles of rocket's flights.
 	 */
 	public void start() {
-		Population population = new Population(target, panelSize, populationSize, lifespan, mutationRate);
+		Population population = new Population(config);
+
 		while (true) {
-
 			population.setCycle(0);
-			for (int i = 1; i <= lifespan; i++) {
-				GenerationData data = population.getGenerationData();
 
+			for (int i = 1; i <= config.lifespan; i++) {
+				GenerationData data = population.getGenerationData();
 				if (data.allFinished) {
 					break;
 				}
@@ -67,6 +56,10 @@ public class Simulator {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setListener(SimulatorListener listener) {
+		this.listener = listener;
 	}
 
 	private void notifyListener(GenerationData data) {

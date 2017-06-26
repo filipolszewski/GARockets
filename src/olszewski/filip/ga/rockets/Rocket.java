@@ -15,23 +15,37 @@ public class Rocket {
 	private Integer timeToReach;
 	private boolean reachedTarget = false;
 
-	private static final float MAX_VELOCITY = 10;
+	private float maxVelocity;
 
-	public Rocket(Integer lifespan, Vector2d panelSize) {
+	/**
+	 * 
+	 * @param lifespan
+	 *            time of life counted in simulation cycles. Used as a RocketDNA
+	 *            size.
+	 * @param panelSize
+	 */
+	public Rocket(Integer lifespan, Vector2d panelSize, float maxVelocity) {
 		this.lifespan = lifespan;
 		this.panelSize = panelSize;
-
+		this.maxVelocity = maxVelocity;
+		// TODO - get rid of panelSize infrmation from this object - it
+		// shouldn't really 'know' about it
 		initRocket();
 	}
 
+	/**
+	 * 
+	 * Initializing the physical vectors with limiting the values, creating a
+	 * random DNA.
+	 */
 	private void initRocket() {
 		this.dna = new RocketDNA(lifespan);
 		this.position = new Vector2d(panelSize.getX() / 2, 30);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
 
-		velocity.setLimitForX(MAX_VELOCITY);
-		velocity.setLimitForY(MAX_VELOCITY);
+		velocity.setLimitForX(maxVelocity);
+		velocity.setLimitForY(maxVelocity);
 
 		position.setLimitForX(panelSize.getX() - 2);
 		position.setLimitForY(panelSize.getY() - 2);
@@ -80,7 +94,7 @@ public class Rocket {
 
 	public Rocket crossoverWith(Rocket parentB) {
 		Integer dnaSize = lifespan;
-		Rocket child = new Rocket(dnaSize, panelSize);
+		Rocket child = new Rocket(dnaSize, panelSize, maxVelocity);
 		RocketDNA newDNA = new RocketDNA(dnaSize);
 		Random r = new Random();
 		Integer distributionPoint = r.nextInt(dnaSize);

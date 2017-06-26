@@ -41,23 +41,22 @@ public class RocketPanel extends JPanel {
 
 	private void drawTarget() {
 		Vector2d target = rocketData.target;
-		g2.setColor(Color.BLACK);
 		g2.fillRect((int) target.getX() - 5, (int) target.getY() - 5, 10, 10);
 	}
 
 	private void drawRockets() {
 		List<Rocket> rockets = rocketData.rockets;
 		for (int i = 0; i < rocketData.rockets.size(); i++) {
-			drawRocket(rockets.get(i));
+			Rocket rocket = rockets.get(i);
+			if (!rocket.crushed()) {
+				drawRocket(rockets.get(i));
+			}
 		}
 	}
 
 	private void drawRocket(Rocket rocket) {
 		Vector2d pos = rocket.getPosition();
-		if (!rocket.crushed()) {
-			g2.fillRect((int) pos.getX() - 2, (int) pos.getY() - 2, 4, 4);
-		}
-
+		g2.fillRect((int) pos.getX() - 2, (int) pos.getY() - 2, 4, 4);
 	}
 
 	public void setRocketData(GenerationData data) {

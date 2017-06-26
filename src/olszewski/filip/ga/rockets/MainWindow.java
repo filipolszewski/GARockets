@@ -2,7 +2,6 @@ package olszewski.filip.ga.rockets;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -24,7 +23,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		setVisible(true);
 		Vector2d panelSize = new Vector2d((float) rocketsPanel.getSize().getWidth(),
 				(float) rocketsPanel.getSize().getHeight());
-		controller.startSimulation(panelSize, 300, 200, 0.03);
+		controller.onStartSimulation(new SimulationConfiguration(null, panelSize, 300, 200, 0.02, 10));
 	}
 
 	private void createController() {
@@ -50,7 +49,7 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		JPanel optionsPanel = new JPanel();
 		mainPanel.add(optionsPanel, BorderLayout.LINE_START);
 
-		JButton startButton = new JButton("Start");
+		// JButton startButton = new JButton("Start");
 
 	}
 
