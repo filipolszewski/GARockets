@@ -1,10 +1,12 @@
 package olszewski.filip.ga.rockets;
 
-public class Simulator {
+public class Simulator extends Thread {
 
 	private SimulationConfiguration config;
 
 	private SimulatorListener listener;
+
+	private volatile boolean running;
 
 	public Simulator(SimulationConfiguration config) {
 		config.target = calculateTarget(config.panelSize);
@@ -27,15 +29,16 @@ public class Simulator {
 	 * iterating with next generations, and inside loop iterating over next
 	 * cycles of rocket's flights.
 	 */
-	public void start() {
+	@Override
+	public void run() {
+		running = true;
 		Population population = new Population(config);
-
-		while (true) {
+		while (running) {
 			population.setCycle(0);
 
 			for (int i = 1; i <= config.lifespan; i++) {
 				GenerationData data = population.getGenerationData();
-				if (data.allFinished) {
+				if (data.allFinished || !running) {
 					break;
 				}
 				notifyListener(data);
@@ -46,16 +49,18 @@ public class Simulator {
 			notifyListener(population.getGenerationData());
 			population.createNewGeneration();
 		}
-
-
 	}
 
 	private void delaySimulation(int delay) {
 		try {
-			Thread.sleep(delay);
+			sleep(delay);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void stopSimulation() {
+		running = false;
 	}
 
 	public void setListener(SimulatorListener listener) {
@@ -67,5 +72,6 @@ public class Simulator {
 			listener.newRocketData(data);
 		}
 	}
+
 
 }

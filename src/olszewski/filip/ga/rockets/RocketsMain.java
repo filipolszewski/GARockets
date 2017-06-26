@@ -22,7 +22,7 @@ public class RocketsMain {
 			@Override
 			public void run() {
 				MainWindow mainWindow = new MainWindow();
-				mainWindow.start();
+				mainWindow.setVisible(true);
 			}
 		});
 	}

@@ -23,16 +23,15 @@ public class RocketPanel extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (rocketData != null) {
-			g2.setColor(Color.BLACK);
 			drawTarget();
-			drawInfo();
-			g2.setColor(Color.RED);
 			drawRockets();
+			drawInfo();
 		}
 
 	}
 
 	private void drawInfo() {
+		g2.setColor(Color.BLACK);
 		g2.drawString("Generation: " + rocketData.generation, 5, 40);
 		g2.drawString("Cycle: " + rocketData.lifecycle, 5, 55);
 		g2.drawString("Population size: " + rocketData.populationSize, 5, 70);
@@ -40,11 +39,13 @@ public class RocketPanel extends JPanel {
 	}
 
 	private void drawTarget() {
+		g2.setColor(Color.BLACK);
 		Vector2d target = rocketData.target;
 		g2.fillRect((int) target.getX() - 5, (int) target.getY() - 5, 10, 10);
 	}
 
 	private void drawRockets() {
+		g2.setColor(Color.RED);
 		List<Rocket> rockets = rocketData.rockets;
 		for (int i = 0; i < rocketData.rockets.size(); i++) {
 			Rocket rocket = rockets.get(i);
@@ -61,6 +62,10 @@ public class RocketPanel extends JPanel {
 
 	public void setRocketData(GenerationData data) {
 		this.rocketData = data;
+	}
+
+	public Vector2d getSizeAsVector2d() {
+		return new Vector2d((float) getSize().getWidth(), (float) getSize().getHeight());
 	}
 
 }

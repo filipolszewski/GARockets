@@ -13,11 +13,11 @@ public class Rocket {
 	private long fitness;
 	private Vector2d panelSize;
 	private boolean crushed = false;
-	private Integer timeToReach;
+	// private Integer timeToReach;
 	private boolean reachedTarget = false;
 
 	private float maxVelocity;
-	private float minDistanceToTarget;
+	private Integer timeToReach;
 
 	/**
 	 * 
@@ -43,8 +43,6 @@ public class Rocket {
 		this.position = new Vector2d(panelSize.getX() / 2, 30);
 		this.velocity = new Vector2d(0, 0);
 		this.acceleration = new Vector2d(0, 0);
-
-		this.minDistanceToTarget = panelSize.distance(new Vector2d());
 
 		velocity.setLimitForX(maxVelocity);
 		velocity.setLimitForY(maxVelocity);
@@ -77,16 +75,9 @@ public class Rocket {
 		velocity.add(acceleration);
 		applyForce(dna.getGeneAt(cycle));
 		
-		float currentDistanceToTarget = position.distance(target);
-
-		if (currentDistanceToTarget < minDistanceToTarget) {
-			minDistanceToTarget = currentDistanceToTarget;
-		}
-
-		if (currentDistanceToTarget < 5) {
+		if (position.distance(target) < 5) {
 			this.reachedTarget = true;
-			minDistanceToTarget = 0;
-			timeToReach = cycle;
+			this.timeToReach = cycle;
 		}
 
 		if ((position.getX() < 2 || position.getX() >= panelSize.getX() - 2)
@@ -107,15 +98,13 @@ public class Rocket {
 	 */
 	public void calculateFitness(Vector2d target) {
 		fitness = 0;
-		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - minDistanceToTarget), 1.2);
+		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - target.distance(position)), 1.5);
 		if (crushed) {
-			fitness /= 3;
+			fitness /= 7;
 		}
 		if (reachedTarget) {
-			fitness += (int) Math.pow(lifespan - timeToReach, 2);
-		}
-		if (fitness <= 0) {
-			fitness = 1;
+			fitness *= 2;
+			fitness += Math.pow((lifespan - timeToReach), 2);
 		}
 	}
 
@@ -138,6 +127,11 @@ public class Rocket {
 		for (int i = distributionPoint; i < dnaSize; i++) {
 			newDNA.setGene(i, parentB.dna.getGeneAt(i));
 		}
+		// for (int i = 0; i < dnaSize / 2; i++) {
+		// newDNA.setGene(i, dna.getGeneAt(i));
+		// newDNA.setGene(i + 1, parentB.dna.getGeneAt(i + 1));
+		// }
+
 		child.setDna(newDNA);
 		return child;
 	}
