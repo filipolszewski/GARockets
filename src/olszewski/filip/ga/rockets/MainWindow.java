@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,6 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import olszewski.filip.ga.rockets.physics.Rectangle2d;
+import olszewski.filip.ga.rockets.physics.Vector2d;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame implements SimulatorListener {
@@ -108,7 +113,14 @@ public class MainWindow extends JFrame implements SimulatorListener {
 		Integer lifespan = Integer.parseInt(lifespanField.getText());
 		double mutationRate = Double.parseDouble(mutationField.getText());
 		float maxVelocity = Float.parseFloat(velocityField.getText());
-		return new SimulationConfiguration(null, panelSize, populationSize, lifespan, mutationRate, maxVelocity);
+		List<Rectangle2d> obstacles = new ArrayList<>();
+		// TEST
+		obstacles.add(
+				new Rectangle2d(new Vector2d(170, 250), new Vector2d(panelSize.getX() - 170, 300)));
+		obstacles.add(new Rectangle2d(new Vector2d(20, 310), new Vector2d(100, 470)));
+		// TEST
+		return new SimulationConfiguration(null, panelSize, populationSize, lifespan, mutationRate, maxVelocity,
+				obstacles);
 	}
 
 	private void createRocketsPanel() {

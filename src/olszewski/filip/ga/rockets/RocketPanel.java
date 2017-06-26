@@ -8,6 +8,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import olszewski.filip.ga.rockets.physics.Rectangle2d;
+import olszewski.filip.ga.rockets.physics.Vector2d;
+
 @SuppressWarnings("serial")
 public class RocketPanel extends JPanel {
 
@@ -24,24 +27,26 @@ public class RocketPanel extends JPanel {
 
 		if (rocketData != null) {
 			drawTarget();
+			drawObstacles();
 			drawRockets();
 			drawInfo();
 		}
 
 	}
 
-	private void drawInfo() {
-		g2.setColor(Color.BLACK);
-		g2.drawString("Generation: " + rocketData.generation, 5, 40);
-		g2.drawString("Cycle: " + rocketData.lifecycle, 5, 55);
-		g2.drawString("Population size: " + rocketData.populationSize, 5, 70);
-		g2.drawString("Successes: " + rocketData.successCount, 5, 85);
-	}
-
 	private void drawTarget() {
 		g2.setColor(Color.BLACK);
 		Vector2d target = rocketData.target;
 		g2.fillRect((int) target.getX() - 5, (int) target.getY() - 5, 10, 10);
+	}
+
+
+	private void drawObstacles() {
+		g2.setColor(Color.LIGHT_GRAY);
+		for (Rectangle2d obstacle : rocketData.obstacles) {
+			Vector2d startPoint = obstacle.getStartPoint();
+			g2.fillRect((int) startPoint.getX(), (int) startPoint.getY(), obstacle.getxSize(), obstacle.getySize());
+		}
 	}
 
 	private void drawRockets() {
@@ -53,6 +58,14 @@ public class RocketPanel extends JPanel {
 				drawRocket(rockets.get(i));
 			}
 		}
+	}
+
+	private void drawInfo() {
+		g2.setColor(Color.BLACK);
+		g2.drawString("Generation: " + rocketData.generation, 5, 40);
+		g2.drawString("Cycle: " + rocketData.lifecycle, 5, 55);
+		g2.drawString("Population size: " + rocketData.populationSize, 5, 70);
+		g2.drawString("Successes: " + rocketData.successCount, 5, 85);
 	}
 
 	private void drawRocket(Rocket rocket) {

@@ -1,5 +1,7 @@
 package olszewski.filip.ga.rockets;
 
+import olszewski.filip.ga.rockets.physics.Vector2d;
+
 public class Simulator extends Thread {
 
 	private SimulationConfiguration config;

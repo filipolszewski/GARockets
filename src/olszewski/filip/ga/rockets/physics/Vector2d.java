@@ -1,4 +1,4 @@
-package olszewski.filip.ga.rockets;
+package olszewski.filip.ga.rockets.physics;
 
 import java.util.Random;
 

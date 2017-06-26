@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import olszewski.filip.ga.rockets.physics.Vector2d;
+
 public class RocketDNA {
 
 	private static final int mutatedGenesNumber = 5;
-	private static final float geneLimit = (float) 0.4;
+	private static final float geneLimit = (float) 0.1;
 	private Integer size;
 	private List<Vector2d> genes = new ArrayList<>();
 

@@ -1,6 +1,10 @@
 package olszewski.filip.ga.rockets;
 
+import java.util.List;
 import java.util.Random;
+
+import olszewski.filip.ga.rockets.physics.Rectangle2d;
+import olszewski.filip.ga.rockets.physics.Vector2d;
 
 public class Rocket {
 
@@ -47,6 +51,9 @@ public class Rocket {
 		velocity.setLimitForX(maxVelocity);
 		velocity.setLimitForY(maxVelocity);
 
+		acceleration.setLimitForX(maxVelocity);
+		acceleration.setLimitForY(maxVelocity);
+
 		position.setLimitForX(panelSize.getX() - 2);
 		position.setLimitForY(panelSize.getY() - 2);
 	}
@@ -64,8 +71,9 @@ public class Rocket {
 	 *            used on this update
 	 * @param target
 	 *            target coordinates to check if rocket reached it
+	 * @param obstacles
 	 */
-	public void update(Integer cycle, Vector2d target) {
+	public void update(Integer cycle, Vector2d target, List<Rectangle2d> obstacles) {
 		
 		if (reachedTarget || crushed) {
 			return;
@@ -79,12 +87,20 @@ public class Rocket {
 			this.reachedTarget = true;
 			this.timeToReach = cycle;
 		}
+		crushed = isCrushed(panelSize, obstacles);
+	}
 
+	private boolean isCrushed(Vector2d panelSize, List<Rectangle2d> obstacles) {
 		if ((position.getX() < 2 || position.getX() >= panelSize.getX() - 2)
 				|| (position.getY() < 2 || position.getY() >= panelSize.getY() - 2)) {
-
-			this.crushed = true;
+			return true;
 		}
+		for (Rectangle2d obstacle : obstacles) {
+			if (obstacle.collision(position, 2)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -98,14 +114,13 @@ public class Rocket {
 	 */
 	public void calculateFitness(Vector2d target) {
 		fitness = 0;
-		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - target.distance(position)), 1.5);
+		fitness += (int) Math.pow(Math.abs(panelSize.distance(new Vector2d()) - target.distance(position)), 1);
 		if (crushed) {
 			fitness /= 7;
 		}
-		if (reachedTarget) {
-			fitness *= 2;
-			fitness += Math.pow((lifespan - timeToReach), 2);
-		}
+		 if (reachedTarget) {
+			fitness += (lifespan - timeToReach);
+		 }
 	}
 
 	/**

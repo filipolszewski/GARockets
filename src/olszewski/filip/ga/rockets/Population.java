@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import olszewski.filip.ga.rockets.physics.Rectangle2d;
+import olszewski.filip.ga.rockets.physics.Vector2d;
+
 public class Population {
 
 	private Integer size;
@@ -18,6 +21,7 @@ public class Population {
 
 	private Integer generation;
 	private List<Rocket> population = new ArrayList<>();
+	private List<Rectangle2d> obstacles;
 
 
 	public Population(SimulationConfiguration config) {
@@ -27,6 +31,7 @@ public class Population {
 		this.lifespan = config.lifespan;
 		this.mutationRate = config.mutationRate;
 		this.rocketMaxVelocity = config.rocketMaxVelocity;
+		this.obstacles = config.obstacles;
 		generation = 1;
 		createRandomPopulation(size);
 	}
@@ -51,7 +56,7 @@ public class Population {
 	public void updatePositions(Integer cycle) {
 		this.cycle = cycle;
 		for (int i = 0; i < size; i++) {
-			population.get(i).update(cycle - 1, target);
+			population.get(i).update(cycle - 1, target, obstacles);
 		}
 	}
 
@@ -160,7 +165,7 @@ public class Population {
 
 	public GenerationData getGenerationData() {
 		return new GenerationData(population, generation, cycle, size, mutationRate, calculateSuccessCount(), target,
-				allFinished());
+				obstacles, allFinished());
 	}
 
 	/**
