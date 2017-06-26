@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class RocketDNA {
 
-	private static final float geneLimit = (float) 0.5;
+	private static final float geneLimit = (float) 0.4;
 	private Integer size;
 	private List<Vector2d> genes = new ArrayList<>();
 
